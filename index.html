@@ -1,56 +1,133 @@
-<!--
-    MIT License
-
-    Copyright (c) 2017 Le Garage
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
--->
-
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web - Snake</title>
     <link href="style.css" type="text/css" rel="stylesheet"/>
-    <script src="js/snake.js"></script>
-    
 </head>
-
-<body onload="start()">
+<body>
     <div class="root">
         <a href="https://github.com/ourtigarage/web-snake">
             <img class="banner" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
                 alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png">
         </a>
-        <div class="game-board">
-            <canvas id="game" width="550" height="550"></canvas>
+
+        <!-- Tabs -->
+        <div class="tab-bar">
+            <button id="tabGame" class="tab-btn active">Game</button>
+            <button id="tabSettings" class="tab-btn">Settings</button>
         </div>
-        <!-- left -->
-        <div class="score-panel">
-            <button id="restart" class="hide" onclick="restart()">Start New</button>
-            <font color="yellow">Score:
-                <span id="score">0</span>
-            </font>
+
+        <!-- Game Tab -->
+        <div id="gameContent">
+            <div class="game-area">
+                <div class="game-board">
+                    <canvas id="game"></canvas>
+                </div>
+                <div id="legendPanel" class="legend-panel" style="display:none;"></div>
+            </div>
+            <div class="score-panel">
+                <button id="restart" class="hide" onclick="restart()">Start New</button>
+                <span class="score-text" id="scoreDisplay">Score: 0</span>
+                <span class="score-text" id="highScoreDisplay">Best: 0</span>
+                <button id="soundToggle" onclick="toggleSound()">Sound: OFF</button>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settingsContent" style="display:none;">
+            <div class="settings-form">
+                <div class="setting-row">
+                    <label>Players</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-group="players" data-value="1">1</button>
+                        <button class="toggle-btn" data-group="players" data-value="2">2</button>
+                    </div>
+                </div>
+
+                <div class="setting-row" id="p2TypeSection" style="display:none;">
+                    <label>Player 2</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-group="player2Type" data-value="human">Human (WASD)</button>
+                        <button class="toggle-btn" data-group="player2Type" data-value="ai">AI</button>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <label>Walls</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-group="wallMode" data-value="solid">Solid</button>
+                        <button class="toggle-btn" data-group="wallMode" data-value="wrap">Wrap</button>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <label>Obstacles</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-group="obstacles" data-value="on">On</button>
+                        <button class="toggle-btn" data-group="obstacles" data-value="off">Off</button>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <label>Moving Bonuses</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-group="bonuses" data-value="on">On</button>
+                        <button class="toggle-btn" data-group="bonuses" data-value="off">Off</button>
+                    </div>
+                </div>
+
+                <div id="itemSettings" style="display:none;" class="item-settings">
+                    <div class="item-category">
+                        <div class="item-category-header" style="color:#4CAF50;">Positive</div>
+                        <label><input type="checkbox" class="item-checkbox" data-item="speedBoost" id="item_speedBoost" checked> Speed Boost</label>
+                        <label><input type="checkbox" class="item-checkbox" data-item="shield" id="item_shield" checked> Shield</label>
+                        <label><input type="checkbox" class="item-checkbox" data-item="magnet" id="item_magnet" checked> Magnet</label>
+                        <div class="select-btns">
+                            <button class="select-all-none" data-category="positive" data-action="all">All</button>
+                            <button class="select-all-none" data-category="positive" data-action="none">None</button>
+                        </div>
+                    </div>
+
+                    <div class="item-category">
+                        <div class="item-category-header" style="color:#F44336;">Negative</div>
+                        <label><input type="checkbox" class="item-checkbox" data-item="bomb" id="item_bomb" checked> Bomb</label>
+                        <label><input type="checkbox" class="item-checkbox" data-item="slow" id="item_slow" checked> Slow</label>
+                        <label><input type="checkbox" class="item-checkbox" data-item="reverse" id="item_reverse" checked> Reverse</label>
+                        <label><input type="checkbox" class="item-checkbox" data-item="fog" id="item_fog" checked> Fog</label>
+                        <div class="select-btns">
+                            <button class="select-all-none" data-category="negative" data-action="all">All</button>
+                            <button class="select-all-none" data-category="negative" data-action="none">None</button>
+                        </div>
+                    </div>
+
+                    <div class="item-category" id="competitiveSection" style="display:none;">
+                        <div class="item-category-header" style="color:#9C27B0;">Competitive</div>
+                        <label><input type="checkbox" class="item-checkbox" data-item="gift" id="item_gift" checked> Gift</label>
+                        <label><input type="checkbox" class="item-checkbox" data-item="freeze" id="item_freeze" checked> Freeze</label>
+                        <div class="select-btns">
+                            <button class="select-all-none" data-category="competitive" data-action="all">All</button>
+                            <button class="select-all-none" data-category="competitive" data-action="none">None</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
     <audio id="myAudio">
         <source src="sound/benny.mp3" type="audio/mpeg"> Your browser does not support the audio element.
     </audio>
-</body>
 
+    <script src="js/snake.js"></script>
+    <script src="js/food.js"></script>
+    <script src="js/obstacles.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
 </html>

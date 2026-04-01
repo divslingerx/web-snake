@@ -1,41 +1,259 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   background-color: #000000;
+  margin: 0;
+  font-family: monospace;
+  color: #ccc;
+  overflow-x: hidden;
 }
 
 .root {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-canvas {
-  background-color: #ffffff; 
-  height: 90%;
-}
-
+/* Banner */
 .banner {
-  position: absolute; 
-  top: 0; 
-  right: 0; 
+  position: absolute;
+  top: 0;
+  right: 0;
   border: 0;
 }
 
+/* Tabs */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.tab-btn {
+  cursor: pointer;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-family: monospace;
+  background: #222;
+  color: #888;
+  border: 1px solid #333;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+
+.tab-btn.active {
+  background: #1a1a2e;
+  color: #fff;
+  border-color: #444;
+}
+
+/* Game area */
+.game-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 20px;
+}
+
 .game-board {
-  margin: 20px;
+  flex-shrink: 0;
+}
+
+canvas {
+  display: block;
+  background-color: #1a1a2e;
+}
+
+/* Legend */
+.legend-panel {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px;
+  min-width: 160px;
+  max-width: 180px;
+  font-size: 12px;
+}
+
+.legend-category {
+  margin-bottom: 8px;
+}
+
+.legend-header {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 2px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  color: #ccc;
+}
+
+.legend-swatch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.legend-swatch + span {
+  transform: rotate(0deg);
+}
+
+/* Score panel */
+.score-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+.score-text {
+  color: yellow;
+  font-family: monospace;
+  font-size: 18px;
 }
 
 .hide {
   display: none;
 }
 
-.score-panel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 #restart {
   cursor: pointer;
-  margin-right: 10px;
-  padding: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+#restart:hover {
+  background: #388E3C;
+}
+
+#soundToggle {
+  cursor: pointer;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-family: monospace;
+  background: #555;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+#soundToggle:hover {
+  background: #777;
+}
+
+/* Settings */
+.settings-form {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 20px;
+  margin: 10px 20px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #222;
+}
+
+.setting-row label {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.toggle-group {
+  display: flex;
+  gap: 4px;
+}
+
+.toggle-btn {
+  cursor: pointer;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-family: monospace;
+  background: #222;
+  color: #888;
+  border: 1px solid #444;
+  border-radius: 4px;
+}
+
+.toggle-btn.active {
+  background: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+/* Item settings */
+.item-settings {
+  padding: 10px 0;
+}
+
+.item-category {
+  margin-bottom: 12px;
+}
+
+.item-category-header {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.item-category label {
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 13px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.item-checkbox {
+  margin-right: 4px;
+  cursor: pointer;
+}
+
+.select-btns {
+  margin-top: 4px;
+}
+
+.select-all-none {
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-family: monospace;
+  background: #222;
+  color: #888;
+  border: 1px solid #444;
+  border-radius: 3px;
+  margin-right: 4px;
+}
+
+.select-all-none:hover {
+  background: #333;
+  color: #ccc;
 }
